@@ -1,0 +1,26 @@
+{
+  "name": "inticate-status",
+  "description": "Frontend and backend for the Inticate status page.",
+  "version": "0.0.1",
+  "author": {
+    "name": "Inticate Softworks",
+    "email": "contact@inticate.com"
+  },
+  "license": "MIT",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "start:server": "cd server && tsx dist/src/index.js",
+    "dev:server": "cd server && tsx watch src/index.ts",
+    "build:server": "cd server && tsc",
+    "clean:server": "cd server && rimraf dist",
+    "lint:server": "cd server && npx eslint ."
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "rimraf": "6.0.1",
+    "tsx": "^4.20.6"
+  }
+}
