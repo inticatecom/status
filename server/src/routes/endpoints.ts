@@ -1,6 +1,7 @@
 // Resources
 import { Router } from "express";
 import { states } from "../index.js";
+import { filterObject } from "../util.js";
 
 /**
  * Routes relating to endpoints and getting their statuses.
@@ -12,13 +13,13 @@ export default function Endpoints() {
    * Fetches all endpoints, including their states and information.
    */
   router.get("/", (req, res) => {
-    const { site } = req.query; // Fetch query parameters from request.
+    const { query } = req.query; // Fetch query parameters from request.
 
     // Filter out results.
-    if (site) {
+    if (query) {
       return res.json(
-        Object.keys(states).filter((siteName) =>
-          siteName.toLowerCase().includes((site as string).toLowerCase())
+        filterObject(states, (siteName) =>
+          siteName.toLowerCase().includes((query as string).toLowerCase())
         )
       );
     }
