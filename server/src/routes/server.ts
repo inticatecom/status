@@ -1,5 +1,6 @@
 // Resources
 import { Router } from "express";
+import { region } from "../index.js";
 
 /**
  * Routes relating to the main status server.
@@ -12,6 +13,7 @@ export default function Server() {
    */
   router.get("/", (_, res) => {
     return res.json({
+      region,
       latestPing: -1,
     });
   });

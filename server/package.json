@@ -10,12 +10,16 @@
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@types/dns2": "^2.0.10",
     "eslint": "^9.36.0",
     "typescript-eslint": "^8.45.0"
   },
   "dependencies": {
     "@types/express": "^5.0.3",
+    "dns2": "^2.1.0",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "ky": "^1.11.0"
+    "ky": "^1.11.0",
+    "os": "^0.1.2"
   }
 }

@@ -1,16 +1,20 @@
 // Resources
 import ky from "ky";
 import server from "./http.js";
+import dotenv from "dotenv";
+import dns from "node:dns/promises";
 
 // Definitions
 import * as Types from "./definitions.js";
 import * as config from "../config/index.js";
+import { getLocalNetwork, getRegion } from "./util.js";
 
 // Settings
 const INITIAL_STATE: Types.State = {
-  success: false,
+  online: false,
   latency: -1,
   lastPinged: new Date(),
+  region: "N/A",
 };
 const DEFAULT_CONFIG: Types.EndpointConfig = {
   okMethods: [200],
@@ -19,6 +23,9 @@ const DEFAULT_CONFIG: Types.EndpointConfig = {
 
 // Variables
 export const states: Record<string, Types.State> = {};
+export let region = "";
+
+dotenv.config(); // Load environment variables.
 
 /**
  * The main function to call the program.
@@ -28,6 +35,20 @@ async function main(): Promise<void> {
   config.endpoints.forEach((endpoint) => {
     states[endpoint.url] = INITIAL_STATE;
   });
+
+  // Set server region.
+  const network = await getLocalNetwork();
+  if (network) {
+    const result = await getRegion(network);
+
+    region = result
+      ? `${result.country.iso_code}${
+          result.subdivisions[0] && `, ${result.subdivisions[0].iso_code}`
+        }`
+      : "N/A";
+  } else {
+    region = "N/A";
+  }
 
   /**
    * Do a full check of all the configured endpoints.
@@ -61,12 +82,22 @@ async function ping(site: Types.Endpoint): Promise<void> {
     headers: config.headers,
   });
   const latency: number = Math.round(performance.now() - start);
+  const region = await getRegion(
+    (
+      await dns.lookup(site.url.substring(8))
+    ).address
+  );
 
   states[site.url] = {
-    success:
+    online:
       result.ok && config.okMethods.some((method) => method === result.status),
     latency: result.ok ? latency : -1,
     lastPinged: new Date(),
+    region: region
+      ? `${region.country.iso_code}${
+          region.subdivisions[0] && `, ${region.subdivisions[0].iso_code}`
+        }`
+      : "N/A",
   };
 }
 

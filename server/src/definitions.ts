@@ -17,11 +17,13 @@ export interface EndpointConfig {
 /** Represents the result of a website's status check. */
 export interface State {
   /** Whether or not the website is considered to be 'online'. */
-  success: boolean;
+  online: boolean;
   /** The time in milliseconds it took to access the website. */
   latency: number;
   /** A date object representing the last time the website was pinged at. */
   lastPinged: Date;
+  /** The endpoint's region. */
+  region: string;
 }
 
 /** Represents an absolute URL. */
@@ -31,4 +33,18 @@ export type Url = `${"http" | "https"}://${string}.${string}`;
 export interface Server {
   /** The time it takes to run another ping after the last one. */
   checkInterval: number;
+}
+
+/** Represents a ISO for a specific location. */
+export interface ISO {
+  /** The ISO code. */
+  iso_code: string;
+}
+
+/** Represents a response from the 'findip.net' for the network's information. */
+export interface NetworkRegion {
+  /** The country. */
+  country: ISO;
+  /** The region's ISO locations. */
+  subdivisions: ISO[];
 }
