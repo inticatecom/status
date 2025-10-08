@@ -24,6 +24,7 @@ const DEFAULT_CONFIG: Types.EndpointConfig = {
 // Variables
 export const states: Record<string, Types.State> = {};
 export let region = "";
+export let latestPing = new Date();
 
 /**
  * The main function to call the program.
@@ -66,6 +67,8 @@ async function main(): Promise<void> {
       const success = await ping(endpoint);
       if (success) successful += 1;
     }
+
+    latestPing = new Date();
 
     logger.info(
       `Successfully updated ${successful}/${config.endpoints.length} endpoints.`
