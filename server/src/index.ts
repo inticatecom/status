@@ -116,6 +116,8 @@ async function ping(site: Types.Endpoint): Promise<boolean> {
         : "N/A",
     };
 
+    logger.trace({ site: site.url, data: states[site.url] });
+
     return true;
   } catch (e) {
     logger.error(e);
