@@ -1,6 +1,7 @@
 // Resources
 import ky from "ky";
 import pino from "pino";
+import { FIND_IP_KEY } from "./environment.js";
 
 // Definitions
 import * as Types from "./definitions.js";
@@ -51,7 +52,7 @@ export async function getRegion(
   try {
     const data = await (
       await ky.get<Types.NetworkRegion | object>(
-        `https://api.findip.net/${ip}/?token=${process.env.FIND_IP_KEY}`
+        `https://api.findip.net/${ip}/?token=${FIND_IP_KEY}`
       )
     ).json();
 

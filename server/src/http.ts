@@ -2,13 +2,8 @@
 import express, { type Express } from "express";
 import endpoints from "./routes/endpoints.js";
 import server from "./routes/server.js";
-import dotenv from "dotenv";
 import { logger } from "./util.js";
-
-dotenv.config({ quiet: true });
-
-// Variables
-const { SERVER_PORT } = process.env;
+import { SERVER_PORT } from "./environment.js";
 
 /**
  * The base initializer to start the HTTP server.

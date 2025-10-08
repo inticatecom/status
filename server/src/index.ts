@@ -1,7 +1,6 @@
 // Resources
 import ky from "ky";
 import server from "./http.js";
-import dotenv from "dotenv";
 import dns from "node:dns/promises";
 import { logger } from "./util.js";
 
@@ -25,8 +24,6 @@ const DEFAULT_CONFIG: Types.EndpointConfig = {
 // Variables
 export const states: Record<string, Types.State> = {};
 export let region = "";
-
-dotenv.config({ quiet: true }); // Load environment variables.
 
 /**
  * The main function to call the program.
