@@ -1,5 +1,6 @@
 // Resources
 import ky from "ky";
+import pino from "pino";
 
 // Definitions
 import * as Types from "./definitions.js";
@@ -25,28 +26,54 @@ export function filterObject<T extends Record<string, unknown>>(
 
 /**
  * Fetches the local network's public IP address if possible.
- * @returns The IP address or null if the operation failed.
+ * @returns The IP address or 'null' if the operation failed.
  */
 export async function getLocalNetwork(): Promise<string | null> {
-  const data = await (
-    await ky.get<{ ip?: string }>(`https://api.ipify.org?format=json`)
-  ).json();
+  try {
+    const data = await (
+      await ky.get<{ ip?: string }>(`https://api.ipify.org?format=json`)
+    ).json();
 
-  return data.ip || null;
-}
-
-export async function getRegion(
-  ip: string
-): Promise<Types.NetworkRegion | null> {
-  const data = await (
-    await ky.get<Types.NetworkRegion | object>(
-      `https://api.findip.net/${ip}/?token=${process.env.FIND_IP_KEY}`
-    )
-  ).json();
-
-  if ("country" in data) {
-    return data;
-  } else {
+    return data.ip || null;
+  } catch {
     return null;
   }
 }
+
+/**
+ * Fetches the region from the provided IP address.
+ * @param ip The IP.
+ * @returns The region data or 'null' if the operation failed.
+ */
+export async function getRegion(
+  ip: string
+): Promise<Types.NetworkRegion | null> {
+  try {
+    const data = await (
+      await ky.get<Types.NetworkRegion | object>(
+        `https://api.findip.net/${ip}/?token=${process.env.FIND_IP_KEY}`
+      )
+    ).json();
+
+    if ("country" in data) {
+      return data;
+    } else {
+      return null;
+    }
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The base logger function to prettify logging across teh application.
+ */
+export const logger = pino({
+  level: "trace",
+  transport: {
+    target: "pino-pretty",
+    options: {
+      colorize: true,
+    },
+  },
+});
