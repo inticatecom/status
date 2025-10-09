@@ -16,7 +16,11 @@
     "dev:server": "cd server && tsx watch src/index.ts",
     "build:server": "cd server && tsc",
     "clean:server": "cd server && rimraf dist",
-    "lint:server": "cd server && npx eslint ."
+    "lint:server": "cd server && npx eslint .",
+    "start:client": "cd client && npm run start",
+    "dev:client": "cd client && npm run dev",
+    "build:client": "cd client && npm run build",
+    "lint:client": "cd client && npm run lint"
   },
   "devDependencies": {
     "typescript": "5.9.3",
