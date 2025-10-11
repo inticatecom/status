@@ -2,7 +2,7 @@
 import {cn} from "@/lib/utility";
 
 // Definitions
-import {CalloutProps} from "@/lib/definitions";
+import type {CalloutProps} from "@/lib/definitions";
 
 /**
  * The callout component, used to distuingishify an important message to the user.

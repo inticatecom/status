@@ -1,9 +1,13 @@
 // Resources
 import "./globals.css";
-import { Geist, Geist_Mono } from "next/font/google";
+import {Geist, Geist_Mono} from "next/font/google";
 
 // Definitions
-import type { Metadata } from "next";
+import type {Metadata} from "next";
+import type {Children} from "@/lib/definitions"
+
+// Components
+import Providers from "./providers";
 
 // Fonts
 const geistSans = Geist({
@@ -30,17 +34,15 @@ export const metadata: Metadata = {
 /**
  * The root layout affecting pages across the entire application.
  */
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout(props: Readonly<Children>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
-      </body>
+    <body
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <Providers>
+      {props.children}
+    </Providers>
+    </body>
     </html>
   );
 }

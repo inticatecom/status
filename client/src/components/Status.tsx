@@ -6,7 +6,7 @@ import {cn} from "@/lib/utility";
 import {useState, useCallback} from "react";
 
 // Defintions
-import * as Types from "@/lib/definitions";
+import type * as Types from "@/lib/definitions";
 
 // Icons
 import {IoMdArrowDropdown, IoMdArrowDropup} from "react-icons/io";
