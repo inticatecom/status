@@ -2,7 +2,10 @@
 import Image from "next/image";
 import {Callout} from "@/components/View";
 import Status from "@/components/Status";
+
+// Definitions
 import {Metadata} from "next";
+import {ResolvingMetadata} from "next/types.js";
 
 /**
  * The home page for the application.
@@ -37,8 +40,10 @@ export default function Home() {
 /**
  * Set the websites title based on the current status of the services.
  */
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(_: object, parent: ResolvingMetadata): Promise<Metadata> {
+  const templateStr = (await parent).title?.template || ""
+
   return {
-    title: "Inticate | Services Operational"
+    title: templateStr.replace("%s", "Services Online")
   }
 }

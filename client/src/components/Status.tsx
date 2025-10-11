@@ -4,10 +4,16 @@ import * as Types from "@/lib/definitions";
 // Icons
 import {IoMdArrowDropdown} from "react-icons/io";
 
+/**
+ * Represents the container for the status page.
+ */
 export default function Status(props: Types.Children<true>) {
   return <div className={"border-1 rounded-lg w-full p-3 border-white/15"}>{props.children}</div>;
 }
 
+/**
+ * A category holding status entries.
+ */
 Status.Category = function StatusCategory(props: Types.StatusCategoryProps) {
   return (
     <div className={"flex flex-col gap-1"}>
@@ -27,6 +33,9 @@ Status.Category = function StatusCategory(props: Types.StatusCategoryProps) {
   )
 }
 
+/**
+ * A status entry holding information of a site and it's current status.
+ */
 Status.Entry = function StatusEntry(props: Types.StatusEntryProps) {
   return <div className={"w-full flex justify-between items-center"}>
     <p className={"text-lg"}>{props.children}</p>
