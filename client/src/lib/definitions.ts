@@ -1,5 +1,6 @@
 // Resources
 import React from "react";
+import {EndpointResponse} from "@/app/api/endpoints/route";
 
 /**
  * Represents the children of a React component.
@@ -39,6 +40,5 @@ export interface StatusCategoryProps extends Children<false> {
 export interface StatusEntryProps {
     /** The title of the entry. */
     children: string;
-    /** The absolute URL to query the backend with. */
-    website: URL;
+    data: EndpointResponse[keyof EndpointResponse];
 }

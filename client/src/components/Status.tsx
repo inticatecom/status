@@ -55,8 +55,11 @@ export function StatusCategory(props: Types.StatusCategoryProps) {
  * A status entry holding information of a site and it's current status.
  */
 export function StatusEntry(props: Types.StatusEntryProps) {
+  // Variables
+  const style = props.data.online ? "text-green-300/70" : "text-red-300/70";
+
   return <div className={"w-full flex justify-between items-center"}>
     <p className={"text-lg"}>{props.children}</p>
-    <p className={"text-green-300/70"}>Operational</p>
+    <p className={style}>{props.data.online ? "Operational" : "Offline"}</p>
   </div>;
 }
