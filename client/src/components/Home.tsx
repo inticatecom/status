@@ -1,6 +1,13 @@
 "use client";
+// Resources
+import ky from "ky";
+
+// Definitions
+import type {ServerResponse} from "@/app/api/server/route";
+
 // Hooks
 import {useEffect} from "react";
+import {useQuery} from "@tanstack/react-query";
 
 // Components
 import {Callout} from "@/components/View";
@@ -11,6 +18,14 @@ import {Status, StatusCategory, StatusEntry} from "@/components/Status";
  * making the requests to the backend server.
  */
 export default function Home() {
+    // Hooks
+    const {data} = useQuery({
+        queryKey: ["server"],
+        queryFn: async () => {
+            return await (await ky.get<ServerResponse>("/api/server")).json()
+        }
+    })
+
     // Variables
     const startYear = 2025;
     const currentYear = new Date().getFullYear();
@@ -20,8 +35,8 @@ export default function Home() {
      * Make initial API request to fetch all endpoint's and their status's.
      */
     useEffect(() => {
-        console.log("hello there!");
-    }, [])
+        console.log(data);
+    }, [data])
 
     return <>
         <Callout className={"flex justify-between items-center w-full mb-3"}>
