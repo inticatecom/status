@@ -1,7 +1,7 @@
 // Components
 import Image from "next/image";
 import {Callout} from "@/components/View";
-import Status from "@/components/Status";
+import {Status, StatusCategory, StatusEntry} from "@/components/Status";
 
 // Definitions
 import {Metadata} from "next";
@@ -27,10 +27,14 @@ export default function Home() {
           <p>Updated a few moments ago</p>
         </Callout>
         <Status>
-          <Status.Category title={"Services"}>
-            <Status.Entry website={"https://lucastranks.com"}>Website</Status.Entry>
-            <Status.Entry website={"https://lucastranks.com"}>Backend API</Status.Entry>
-          </Status.Category>
+          <StatusCategory title={"Services"} position={"top"}>
+            <StatusEntry website={"https://lucastranks.com"}>Website</StatusEntry>
+            <StatusEntry website={"https://lucastranks.com"}>Backend API</StatusEntry>
+          </StatusCategory>
+          <StatusCategory title={"Services"} position={"bottom"}>
+            <StatusEntry website={"https://lucastranks.com"}>Website</StatusEntry>
+            <StatusEntry website={"https://lucastranks.com"}>Backend API</StatusEntry>
+          </StatusCategory>
         </Status>
       </div>
     </div>
