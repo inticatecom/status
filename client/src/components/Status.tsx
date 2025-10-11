@@ -56,10 +56,10 @@ export function StatusCategory(props: Types.StatusCategoryProps) {
  */
 export function StatusEntry(props: Types.StatusEntryProps) {
   // Variables
-  const style = props.data.online ? "text-green-300/70" : "text-red-300/70";
+  const style = props.data.online ? "text-green-300/70" : "text-red-400/70";
 
   return <div className={"w-full flex justify-between items-center"}>
     <p className={"text-lg"}>{props.children}</p>
-    <p className={style}>{props.data.online ? "Operational" : "Offline"}</p>
+    <p className={style}>{props.data.online ? "Operational" : "Offline"} ({props.data.latency}ms)</p>
   </div>;
 }

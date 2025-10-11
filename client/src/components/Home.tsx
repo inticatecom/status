@@ -5,9 +5,11 @@ import ky from "ky";
 // Definitions
 import type {ServerResponse} from "@/app/api/server/route";
 import type {EndpointResponse} from "@/app/api/endpoints/route";
+import type {CalloutProps} from "@/lib/definitions";
 
 // Hooks
 import {useQuery} from "@tanstack/react-query";
+import {useEffect, useState} from "react";
 
 // Components
 import {Callout} from "@/components/View";
@@ -25,22 +27,47 @@ export default function Home() {
             return await (await ky.get<ServerResponse>("/api/server")).json()
         }
     })
-    const {data: endpoints} = useQuery({
+    const {data: endpoints, isLoading: endpointsLoading} = useQuery({
         queryKey: ["endpoints"],
         queryFn: async () => {
             return (await ky.get<EndpointResponse>("/api/endpoints")).json()
         }
     })
 
+    // States
+    const [status, setStatus] = useState<CalloutProps["type"]>("success");
+
     // Variables
     const startYear = 2025;
     const currentYear = new Date().getFullYear();
     const dateStr = startYear !== currentYear ? `${startYear} - ${currentYear}` : String(startYear);
 
+    /**
+     * Run global filter check across all endpoint's and their status's so we can determine
+     * if there is a global system outage or not.
+     */
+    useEffect(() => {
+        if (!endpoints || endpointsLoading) return; // If endpoints are still loading, then don't run rest of logic.
+
+        // Converts object to array of booleans containing their status's.
+        const states = Object.keys(endpoints || {}).map((endpointName) => {
+            return endpoints && endpoints[endpointName].online;
+        });
+
+        // Set status based on population of states array.
+        if (states.every(state => state)) {
+            setStatus("success");
+        } else if (states.every(state => !state)) {
+            setStatus("error");
+        } else {
+            setStatus("warning");
+        }
+    }, [endpoints, endpointsLoading]);
+
     return (
         <>
-            <Callout className={"flex justify-between items-center w-full mb-3"}>
-                <p className={"font-semibold"}>All Systems Operational</p>
+            <Callout className={"flex justify-between items-center w-full mb-3"} type={status}>
+                <p className={"font-semibold"}>{status === "success" ? "All Systems Operational" : status === "warning" ? "Partial System Outage" : "All Systems Offline"}</p>
                 <p>Updated a few moments ago</p>
             </Callout>
             <Status>
