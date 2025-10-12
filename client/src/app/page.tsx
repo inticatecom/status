@@ -34,10 +34,6 @@ export default async function RootPage() {
     status = "warning";
   }
 
-  console.log(states.every(state => state));
-  console.log(states);
-  console.log(status);
-
   return (
     <div className={"flex flex-col justify-center items-start max-w-2/5 my-20 mx-auto"}>
       <div className={"w-full flex flex-col justify-center items-center"}>
