@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 /**
  * The root layout affecting pages across the entire application.
  */
-export default function RootLayout(props: Readonly<Children>) {
+export default function RootLayout(props: Readonly<Children<true>>) {
   return (
     <html lang="en">
     <body

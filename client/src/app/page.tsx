@@ -1,15 +1,43 @@
+// Resources
+import ky from "ky";
+
 // Components
 import Image from "next/image";
 import Home from "@/components/Home";
 
 // Definitions
+import type {ServerResponse} from "@/app/api/server/route";
+import type {EndpointResponse} from "@/app/api/endpoints/route";
 import type {Metadata} from "next";
 import type {ResolvingMetadata} from "next/types.js";
+import type {CalloutProps} from "@/lib/definitions";
 
 /**
  * The root page for the application.
  */
-export default function RootPage() {
+export default async function RootPage() {
+  // Variables
+  const server = await (await ky.get<ServerResponse>("http://localhost:3000/api/server")).json();
+  const endpoints = await (await ky.get<EndpointResponse>("http://localhost:3000/api/endpoints")).json()
+
+  const states = Object.keys(endpoints).map(endpointName => {
+    return endpoints[endpointName].online;
+  });
+
+  let status: CalloutProps["type"];
+
+  if (states.every(state => state)) {
+    status = "success";
+  } else if (states.every(state => !state)) {
+    status = "error";
+  } else {
+    status = "warning";
+  }
+
+  console.log(states.every(state => state));
+  console.log(states);
+  console.log(status);
+
   return (
     <div className={"flex flex-col justify-center items-start max-w-2/5 my-20 mx-auto"}>
       <div className={"w-full flex flex-col justify-center items-center"}>
@@ -21,7 +49,7 @@ export default function RootPage() {
           width={400} height={100}
           priority
         />
-        <Home/>
+        <Home server={server} endpoints={endpoints} status={status}/>
       </div>
     </div>
   )

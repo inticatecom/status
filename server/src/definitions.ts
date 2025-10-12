@@ -4,6 +4,8 @@ export interface Endpoint {
   url: Url;
   /** The configuration for the endpoint. */
   config?: Partial<EndpointConfig>;
+  /** A display name that if provided will take precident over the URL being included in the request. */
+  displayName?: string;
 }
 
 /** Represents an endpoint's configuration and how it is accessed when it's pinged. */

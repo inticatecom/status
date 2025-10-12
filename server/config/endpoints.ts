@@ -7,6 +7,7 @@ export default [
     url: "https://lucastranks.com",
   },
   {
-    url: "https://abcdasjknsnnaasd.com"
+    url: "https://abcdasjknsnnaasd.com",
+    displayName: "API Server"
   }
 ] satisfies Endpoint[];
