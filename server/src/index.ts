@@ -1,5 +1,5 @@
 // Resources
-import ky from "ky";
+import ky, { type KyResponse } from "ky";
 import server from "./http.js";
 import dns from "node:dns/promises";
 import { logger } from "./util.js";
@@ -32,7 +32,7 @@ export let latestPing = new Date();
 async function main(): Promise<void> {
   // Initialize states.
   config.endpoints.forEach((endpoint) => {
-    states[endpoint.url] = INITIAL_STATE;
+    states[endpoint.displayName || endpoint.url] = INITIAL_STATE;
   });
 
   // Set server region.
@@ -55,7 +55,7 @@ async function main(): Promise<void> {
    * Do a full check of all the configured endpoints.
    */
   async function doCheck() {
-    let successful = 0;
+    let successful = 0; // The number of successful pings.
 
     logger.debug(
       `Attempting to update ${config.endpoints.length} endpoint${
@@ -63,12 +63,13 @@ async function main(): Promise<void> {
       }.`
     );
 
+    // Loop over all endpoints and run the ping logic on it.
     for (const endpoint of config.endpoints) {
       const success = await ping(endpoint);
       if (success) successful += 1;
     }
 
-    latestPing = new Date();
+    latestPing = new Date(); // Set the latest ping run to the current time after the ping operation has ran.
 
     logger.info(
       `Successfully updated ${successful}/${config.endpoints.length} endpoints.`
@@ -91,41 +92,50 @@ async function main(): Promise<void> {
  * @param site The site to make the request to.
  */
 async function ping(site: Types.Endpoint): Promise<boolean> {
+  const config = (site.config as Types.EndpointConfig) || DEFAULT_CONFIG; // Find endpoint configuration or use default configuration.
+  const start = performance.now(); // Start latency check.
+
+  // Attempt to make request to endpoint's base URL.
+  let result: KyResponse<Types.State>;
   try {
-    const config = (site.config as Types.EndpointConfig) || DEFAULT_CONFIG;
-    const start = performance.now();
-    const result = await ky.get(site.url, {
+    result = await ky.get(site.url, {
       headers: config.headers,
     });
-    const latency: number = Math.round(performance.now() - start);
-    const region = await getRegion(
-      (
-        await dns.lookup(site.url.substring(8))
-      ).address
-    );
-
-    if (!region) logger.warn(`Failed to resolve DNS for host: ${site.url}`);
-
-    states[site.url] = {
-      online:
-        result.ok &&
-        config.okMethods.some((method) => method === result.status),
-      latency: result.ok ? latency : -1,
-      lastPinged: new Date(),
-      region: region
-        ? `${region.country.iso_code}${
-            region.subdivisions[0] && `, ${region.subdivisions[0].iso_code}`
-          }`
-        : "N/A",
-    };
-
-    logger.trace({ site: site.url, data: states[site.url] });
-
-    return true;
   } catch (e) {
     logger.error(e);
-    return false;
+    return false; // Tell the function that the endpoint is currently offline.
   }
+
+  const latency: number = Math.round(performance.now() - start); // End latency check after request has been made.
+
+  // Attempt to identify the endpoint's server's location.
+  let region: Types.NetworkRegion | null = null;
+  try {
+    const hostname = new URL(site.url).hostname;
+    const address = await dns.lookup(hostname);
+    region = await getRegion(address.address);
+  } catch (e) {
+    logger.warn(`Failed to resolve region for ${site.url}: ${e}`);
+  }
+
+  const siteName = site.displayName || site.url; // Use either the site's display name if provided or the site's absolute URL.
+
+  // Populate object with new information.
+  states[siteName] = {
+    online:
+      result.ok && config.okMethods.some((method) => method === result.status),
+    latency: result.ok ? latency : -1,
+    lastPinged: new Date(),
+    region: region
+      ? `${region.country.iso_code}${
+          region.subdivisions[0] && `, ${region.subdivisions[0].iso_code}`
+        }`
+      : "N/A",
+  };
+
+  logger.debug(states[siteName]);
+
+  return true; // Tell the function that the operation succeeded.
 }
 
 main(); // Initialize application.
