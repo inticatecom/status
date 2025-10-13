@@ -7,11 +7,11 @@ import Image from "next/image";
 import Home from "@/components/Home";
 
 // Definitions
-import type { ServerResponse } from "@/app/api/server/route";
-import type { EndpointResponse } from "@/app/api/endpoints/route";
-import type { Metadata } from "next";
-import type { ResolvingMetadata } from "next/types.js";
-import type { CalloutProps } from "@/lib/definitions";
+import type {ServerResponse} from "@/app/api/server/route";
+import type {EndpointResponse} from "@/app/api/endpoints/route";
+import type {Metadata} from "next";
+import type {ResolvingMetadata} from "next/types.js";
+import type {CalloutProps} from "@/lib/definitions";
 
 /**
  * The root page for the application.
@@ -28,7 +28,7 @@ export default async function RootPage() {
   return (
     <div
       className={
-        "flex flex-col justify-center items-start max-w-2/5 my-20 mx-auto"
+        "flex flex-col justify-center items-start my-20 mx-auto 2xl:max-w-2/5 lg:max-w-3/5 sm:max-w-4/5 max-w-11/12"
       }>
       <div className={"w-full flex flex-col justify-center items-center"}>
         <Image
@@ -69,8 +69,8 @@ export async function generateMetadata(
       status === "success"
         ? "Systems Operational"
         : status === "warning"
-        ? "Partial System Outage"
-        : "System Outage"
+          ? "Partial System Outage"
+          : "System Outage"
     ),
   };
 }
@@ -78,6 +78,7 @@ export async function generateMetadata(
 /**
  * Fetches the global status of all services.
  * @param endpoints The endpoints to check.
+ * @returns The status type for all the endpoints.
  */
 function getGlobalStatus(endpoints: EndpointResponse): CalloutProps["type"] {
   const states = Object.keys(endpoints).map((endpointName) => {

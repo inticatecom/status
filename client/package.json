@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.90.2",
     "clsx": "^2.1.1",
     "ky": "^1.11.0",
     "moment": "^2.30.1",
