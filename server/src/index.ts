@@ -22,7 +22,7 @@ const DEFAULT_CONFIG: Types.EndpointConfig = {
 };
 
 // Variables
-export const states: Record<string, Types.State> = {};
+export const states: Record<string, Record<string, Types.State>> = {};
 export let region = "";
 export let latestPing = new Date();
 
@@ -31,8 +31,14 @@ export let latestPing = new Date();
  */
 async function main(): Promise<void> {
   // Initialize states.
-  config.endpoints.forEach((endpoint) => {
-    states[endpoint.displayName || endpoint.url] = INITIAL_STATE;
+  Object.entries(config.endpoints).forEach(([categoryName, endpoints]) => {
+    const temp: Record<string, Types.State> = {};
+
+    for (const endpoint of endpoints) {
+      temp[endpoint.displayName || endpoint.url] = INITIAL_STATE;
+    }
+
+    states[categoryName] = temp;
   });
 
   // Set server region.
@@ -55,25 +61,27 @@ async function main(): Promise<void> {
    * Do a full check of all the configured endpoints.
    */
   async function doCheck() {
+    let total = 0;
     let successful = 0; // The number of successful pings.
 
-    logger.debug(
-      `Attempting to update ${config.endpoints.length} endpoint${
-        config.endpoints.length > 1 ? "s" : ""
-      }.`
-    );
+    // logger.debug(
+    //   `Attempting to update ${config.endpoints.length} endpoint${
+    //     config.endpoints.length > 1 ? "s" : ""
+    //   }.`
+    // );
 
     // Loop over all endpoints and run the ping logic on it.
-    for (const endpoint of config.endpoints) {
-      const success = await ping(endpoint);
-      if (success) successful += 1;
+    for (const [categoryName, endpoints] of Object.entries(config.endpoints)) {
+      for (const endpoint of endpoints) {
+        const success = await ping(endpoint, categoryName);
+        total += 1;
+        if (success) successful += 1;
+      }
     }
 
     latestPing = new Date(); // Set the latest ping run to the current time after the ping operation has ran.
 
-    logger.info(
-      `Successfully updated ${successful}/${config.endpoints.length} endpoints.`
-    );
+    logger.info(`Successfully updated ${successful}/${total} endpoints.`);
   }
 
   // Run initial ping.
@@ -91,7 +99,7 @@ async function main(): Promise<void> {
  * The function that makes the actual request to the endpoint.
  * @param site The site to make the request to.
  */
-async function ping(site: Types.Endpoint): Promise<boolean> {
+async function ping(site: Types.Endpoint, category: string): Promise<boolean> {
   const config = (site.config as Types.EndpointConfig) || DEFAULT_CONFIG; // Find endpoint configuration or use default configuration.
   const start = performance.now(); // Start latency check.
 
@@ -120,8 +128,10 @@ async function ping(site: Types.Endpoint): Promise<boolean> {
 
   const siteName = site.displayName || site.url; // Use either the site's display name if provided or the site's absolute URL.
 
+  if (!states[category]) return false;
+
   // Populate object with new information.
-  states[siteName] = {
+  states[category][siteName] = {
     online:
       result.ok && config.okMethods.some((method) => method === result.status),
     latency: result.ok ? latency : -1,
