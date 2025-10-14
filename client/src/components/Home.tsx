@@ -58,18 +58,29 @@ export default function Home({
         <p className={"text-sm text-pretty"}>{statusText.summary}</p>
       </Callout>
       <Status>
-        <StatusCategory title={"Services"} position={"top"}>
-          {endpoints &&
-            Object.keys(endpoints).map((endpointUrl, index) => (
-              <StatusEntry key={index} data={endpoints[endpointUrl]}>
-                {endpointUrl}
-              </StatusEntry>
-            ))}
-        </StatusCategory>
-        <StatusCategory title={"Services"} position={"bottom"}>
-          {/*<StatusEntry website={"https://lucastranks.com"}>Website</StatusEntry>*/}
-          {/*<StatusEntry website={"https://lucastranks.com"}>Backend API</StatusEntry>*/}
-        </StatusCategory>
+        {endpoints &&
+          Object.entries(endpoints).map(
+            ([categoryName, categoryEndpoints], categoryIndex) => (
+              <StatusCategory
+                key={categoryIndex}
+                title={categoryName}
+                position={
+                  categoryIndex === 0
+                    ? "top"
+                    : categoryIndex === Object.keys(endpoints).length - 1
+                    ? "bottom"
+                    : "center"
+                }>
+                {Object.entries(categoryEndpoints).map(
+                  ([endpointName, endpointData], endpointIndex) => (
+                    <StatusEntry key={endpointIndex} data={endpointData}>
+                      {endpointName}
+                    </StatusEntry>
+                  )
+                )}
+              </StatusCategory>
+            )
+          )}
         <div
           className={
             "w-full flex justify-between items-center text-white/70 mt-5"
