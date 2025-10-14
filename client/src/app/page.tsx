@@ -1,4 +1,3 @@
-"use server";
 // Resources
 import ky from "ky";
 
@@ -15,6 +14,8 @@ import type { CalloutProps } from "@/lib/definitions";
 
 // Variables
 const { NEXT_PUBLIC_CLIENT_URL } = process.env;
+
+export const dynamic = "force-dynamic"; // Make route dynamic to prevent prerender error.
 
 /**
  * The root page for the application.
@@ -61,21 +62,28 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const templateStr = (await parent).title?.template || "";
-  const endpoints = await (
-    await ky.get<EndpointResponse>("http://localhost:3000/api/endpoints")
-  ).json();
-  const status = getGlobalStatus(endpoints);
 
-  return {
-    title: templateStr.replace(
-      "%s",
-      status === "success"
-        ? "Systems Operational"
-        : status === "warning"
-        ? "Partial System Outage"
-        : "System Outage"
-    ),
-  };
+  try {
+    const endpoints = await (
+      await ky.get<EndpointResponse>("http://localhost:3000/api/endpoints")
+    ).json();
+    const status = getGlobalStatus(endpoints);
+
+    return {
+      title: templateStr.replace(
+        "%s",
+        status === "success"
+          ? "Systems Operational"
+          : status === "warning"
+          ? "Partial System Outage"
+          : "System Outage"
+      ),
+    };
+  } catch {
+    return {
+      title: templateStr.replace("%", ""),
+    };
+  }
 }
 
 /**
