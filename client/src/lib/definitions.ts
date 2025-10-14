@@ -43,5 +43,6 @@ export interface StatusCategoryProps extends Children<false> {
 export interface StatusEntryProps {
   /** The title of the entry. */
   children: string;
+  /** The endpoint's information. */
   data: EndpointResponse[keyof EndpointResponse][keyof EndpointResponse];
 }
