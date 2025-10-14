@@ -13,16 +13,19 @@ import type { Metadata } from "next";
 import type { ResolvingMetadata } from "next/types.js";
 import type { CalloutProps } from "@/lib/definitions";
 
+// Variables
+const { NEXT_PUBLIC_CLIENT_URL } = process.env;
+
 /**
  * The root page for the application.
  */
 export default async function RootPage() {
   // Variables
   const server = await (
-    await ky.get<ServerResponse>("http://localhost:3000/api/server")
+    await ky.get<ServerResponse>(`${NEXT_PUBLIC_CLIENT_URL}/api/server`)
   ).json();
   const endpoints = await (
-    await ky.get<EndpointResponse>("http://localhost:3000/api/endpoints")
+    await ky.get<EndpointResponse>(`${NEXT_PUBLIC_CLIENT_URL}/api/endpoints`)
   ).json();
 
   return (

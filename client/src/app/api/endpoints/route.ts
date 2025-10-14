@@ -20,7 +20,9 @@ export type EndpointResponse = Record<
  */
 export async function GET() {
   const data = await (
-    await ky.get<EndpointResponse>("http://localhost:3001/endpoints")
+    await ky.get<EndpointResponse>(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/endpoints`
+    )
   ).json();
   return Response.json(data);
 }
