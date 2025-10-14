@@ -30,12 +30,15 @@ export let latestPing = new Date();
  * The main function to call the program.
  */
 async function main(): Promise<void> {
+  let total = 0;
+
   // Initialize states.
   Object.entries(config.endpoints).forEach(([categoryName, endpoints]) => {
     const temp: Record<string, Types.State> = {};
 
     for (const endpoint of endpoints) {
       temp[endpoint.displayName || endpoint.url] = INITIAL_STATE;
+      total += 1;
     }
 
     states[categoryName] = temp;
@@ -61,20 +64,16 @@ async function main(): Promise<void> {
    * Do a full check of all the configured endpoints.
    */
   async function doCheck() {
-    let total = 0;
     let successful = 0; // The number of successful pings.
 
-    // logger.debug(
-    //   `Attempting to update ${config.endpoints.length} endpoint${
-    //     config.endpoints.length > 1 ? "s" : ""
-    //   }.`
-    // );
+    logger.debug(
+      `Attempting to update ${total} endpoint${total > 1 ? "s" : ""}.`
+    );
 
     // Loop over all endpoints and run the ping logic on it.
     for (const [categoryName, endpoints] of Object.entries(config.endpoints)) {
       for (const endpoint of endpoints) {
         const success = await ping(endpoint, categoryName);
-        total += 1;
         if (success) successful += 1;
       }
     }
@@ -143,7 +142,7 @@ async function ping(site: Types.Endpoint, category: string): Promise<boolean> {
       : "N/A",
   };
 
-  logger.debug(states[siteName]);
+  logger.debug(states[category][siteName]);
 
   return true; // Tell the function that the operation succeeded.
 }
