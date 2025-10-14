@@ -1,7 +1,12 @@
+// Resources
+import dotenv from "dotenv";
+
+// Definitions
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+dotenv.config({ path: "../.env", quiet: true }); // Configure environment variables to load from root.
 
-export default nextConfig;
+// Variables
+const nextConfig: NextConfig = {};
+
+export default nextConfig; // Export Configuration
