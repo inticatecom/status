@@ -81,7 +81,7 @@ export async function generateMetadata(
     };
   } catch {
     return {
-      title: templateStr.replace("%", ""),
+      title: templateStr.replace("%s", ""),
     };
   }
 }
