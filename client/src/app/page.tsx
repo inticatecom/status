@@ -65,7 +65,7 @@ export async function generateMetadata(
 
   try {
     const endpoints = await (
-      await ky.get<EndpointResponse>("http://localhost:3000/api/endpoints")
+      await ky.get<EndpointResponse>(`${NEXT_PUBLIC_CLIENT_URL}/api/endpoints`)
     ).json();
     const status = getGlobalStatus(endpoints);
 
