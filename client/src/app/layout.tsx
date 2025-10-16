@@ -1,10 +1,10 @@
 // Resources
 import "./globals.css";
-import {Geist, Geist_Mono} from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 
 // Definitions
-import type {Metadata} from "next";
-import type {Children} from "@/lib/definitions"
+import type { Metadata } from "next";
+import type { Children } from "@/lib/definitions";
 
 // Fonts
 const geistSans = Geist({
@@ -34,7 +34,10 @@ export const metadata: Metadata = {
 export default function RootLayout(props: Readonly<Children<true>>) {
   return (
     <html lang="en">
-    <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{props.children}</body>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {props.children}
+      </body>
     </html>
   );
 }

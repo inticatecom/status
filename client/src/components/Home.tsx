@@ -7,9 +7,15 @@ import type { ServerResponse } from "@/app/api/server/route";
 import type { EndpointResponse } from "@/app/api/endpoints/route";
 import type { CalloutProps } from "@/lib/definitions";
 
+// Hooks
+import { useCallback, useState } from "react";
+
 // Components
 import { Callout } from "@/components/View";
 import { Status, StatusCategory, StatusEntry } from "@/components/Status";
+
+// Icons
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
 /**
  * The client-side version of the home page doing the behind the scene actions like
@@ -24,6 +30,9 @@ export default function Home({
   server: ServerResponse;
   status: CalloutProps["type"];
 }) {
+  // States
+  const [expanded, setExpanded] = useState<boolean>(false);
+
   // Variables
   const startYear = 2025;
   const currentYear = new Date().getFullYear();
@@ -46,17 +55,37 @@ export default function Home({
         : "All services are currently experiencing an outage. Please check our socials to keep up-to-date with the issues.",
   };
 
+  /**
+   * Handle expanding and minimizing the notice.
+   */
+  const handleExpand = useCallback(() => {
+    setExpanded(!expanded);
+  }, [setExpanded, expanded]);
+
   return (
     <>
-      <Callout className={"w-full mb-3"} type={status}>
-        <div className={"flex justify-between items-center mb-1"}>
-          <p className={"font-semibold"}>{statusText.title}</p>
-          <p className={"text-end"}>
-            Updated {moment(new Date(server.latestPing)).fromNow()}
-          </p>
-        </div>
-        <p className={"text-sm text-pretty"}>{statusText.summary}</p>
-      </Callout>
+      <button onClick={handleExpand} className="w-full mb-3 cursor-pointer">
+        <Callout
+          className={"w-full flex flex-col justify-center gap-1"}
+          type={status}>
+          <div className="flex justify-between items-center">
+            <p className={"font-semibold"}>{statusText.title}</p>
+            <div className="flex justify-center items-center gap-1">
+              <p className={"text-end"}>
+                Updated {moment(new Date(server.latestPing)).fromNow()}
+              </p>
+              {!expanded ? (
+                <IoMdArrowDropdown className="text-lg" />
+              ) : (
+                <IoMdArrowDropup className="text-lg" />
+              )}
+            </div>
+          </div>
+          {expanded && (
+            <p className={"text-sm text-start"}>{statusText.summary}</p>
+          )}
+        </Callout>
+      </button>
       <Status>
         {endpoints &&
           Object.entries(endpoints).map(

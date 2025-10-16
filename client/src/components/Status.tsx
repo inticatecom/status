@@ -72,7 +72,7 @@ export function StatusEntry(props: Types.StatusEntryProps) {
   return (
     <div className={"w-full flex justify-between items-center"}>
       <p className={"text-lg"}>{props.children}</p>
-      <p className={style}>
+      <p className={cn("text-end", style)}>
         {props.data.online ? "Operational" : "Offline"} ({props.data.latency}ms)
       </p>
     </div>
