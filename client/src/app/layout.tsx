@@ -3,7 +3,7 @@ import "./globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 
 // Definitions
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { Children } from "@/lib/definitions";
 
 // Fonts
@@ -23,9 +23,28 @@ const geistMono = Geist_Mono({
 // Metadata
 export const metadata: Metadata = {
   title: {
-    template: "%s | Inticate",
     default: "Inticate Softworks",
+    template: "%s | Inticate",
   },
+  description:
+    "The official status of all of Inticate's services. Keep up-to-date with outages and other important events.",
+  openGraph: {
+    title: "Inticate Softworks",
+    siteName: "Inticate Softworks",
+    images: [
+      {
+        url: "https://inticate.com/assets/images/brand.jpg",
+        alt: "Inticate Softworks",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+};
+
+// Viewport
+export const viewport: Viewport = {
+  themeColor: "#121212",
 };
 
 /**
