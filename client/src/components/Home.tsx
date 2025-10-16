@@ -13,6 +13,7 @@ import { useCallback, useState } from "react";
 // Components
 import { Callout } from "@/components/View";
 import { Status, StatusCategory, StatusEntry } from "@/components/Status";
+import Link from "next/link";
 
 // Icons
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
@@ -69,7 +70,7 @@ export default function Home({
           className={"w-full flex flex-col justify-center gap-1"}
           type={status}>
           <div className="flex justify-between items-center">
-            <p className={"font-semibold"}>{statusText.title}</p>
+            <p className={"text-start font-semibold"}>{statusText.title}</p>
             <div className="flex justify-center items-center gap-1">
               <p className={"text-end"}>
                 Updated {moment(new Date(server.latestPing)).fromNow()}
@@ -94,11 +95,13 @@ export default function Home({
                 key={categoryIndex}
                 title={categoryName}
                 position={
-                  categoryIndex === 0
-                    ? "top"
-                    : categoryIndex === Object.keys(endpoints).length - 1
-                    ? "bottom"
-                    : "center"
+                  Object.entries(endpoints).length !== 1
+                    ? categoryIndex === 0
+                      ? "top"
+                      : categoryIndex === Object.keys(endpoints).length - 1
+                      ? "bottom"
+                      : "center"
+                    : "both"
                 }>
                 {Object.entries(categoryEndpoints).map(
                   ([endpointName, endpointData], endpointIndex) => (
@@ -117,7 +120,9 @@ export default function Home({
           <p>
             Copyright &copy; {dateStr} | {server.region}
           </p>
-          <p>Powered by Inticate</p>
+          <Link href="https://github.com/inticatecom/status" target="_blank">
+            Powered by Inticate
+          </Link>
         </div>
       </Status>
     </>

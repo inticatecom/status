@@ -40,6 +40,8 @@ export function StatusCategory(props: Types.StatusCategoryProps) {
           ? "rounded-t-lg"
           : props.position === "bottom"
           ? "rounded-b-lg border-t-0"
+          : props.position === "both"
+          ? "rounded-lg"
           : ""
       )}>
       <button

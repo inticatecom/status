@@ -36,7 +36,7 @@ export type CalloutProps = {
 
 export interface StatusCategoryProps extends Children<false> {
   title: string;
-  position: "top" | "center" | "bottom";
+  position: "top" | "center" | "bottom" | "both";
 }
 
 /** Represents the properties of the status entry component. */
