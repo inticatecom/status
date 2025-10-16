@@ -22,9 +22,35 @@
 
 ### Getting Started
 
-The installation process has been made fairly simple to provide a quick and easy setup for developers. Please keep in mind that you should have a basic knowledge of TypeScript and if deploying to a production environment, common proxies like Nginx and Apache.
+The installation process has been made fairly simple to provide a quick and easy setup for developers.
 
-### Attributions
+> [!IMPORTANT]
+> Before continuing, it is recommended that you have at least a basic understanding of TypeScript and programming in general. If you are deploying to a production environment, knowledge of Nginx or Apache is a bonus.
+
+1. To start with the installation, we first need to clone the source code from the repository onto your local machine. This can be done simply by making use of **Git** to clone the repository from **GitHub**.
+   ```bash
+   git clone https://github.com/inticatecom/status.git
+   ```
+2. Now that we have cloned the source code to our local machine, we can begin setting up our environment.
+   We can start by preparing our configuration files by making a copy of the sample ones provided by default.
+   ```bash
+   cd server/config && cp example.server.ts server.ts ** cp example.endpoints.ts endpoints.ts && cd ../
+   cp .env.example .env
+   ```
+   Now that these configuration files have been created, we can populate them with the data we need. Start by opening our newly created `.env` and follow the steps provided in the comments to retrieve the necessary values. Then you can open the `server/config/server.ts` and `server/config/endpoints.ts` configuration files and configure them to your liking.
+3. Now that our configuration files are ready and populated with the necessary data, we can start preparing to run our application.
+   First make sure that you are in the root of your application and run the following commands for a **production** setup.
+   ```bash
+   npm run build
+   npm run start
+   ```
+   And for a development setup where you just want to test or make modification to the application, you can run the following command.
+   ```bash
+   npm run dev
+   ```
+
+<details>
+<summary><h3>Attributions</h3></summary>
 
 Inticate Status was made possible by the many packages provided by the NPM repository and their respective authors. The authors of the packages will be listed below (not all).
 
@@ -50,6 +76,8 @@ Inticate Status was made possible by the many packages provided by the NPM repos
 - [ESLint](https://eslint.org/) - Linting support.
 - [tsx](https://github.com/privatenumber/tsx) - Allows us to run our TypeScript files at ease.
 - [concurrently](https://github.com/open-cli-tools/concurrently) - Allows us to run the entire project with one command.
+
+</details>
 
 ### License
 
