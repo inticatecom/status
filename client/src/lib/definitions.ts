@@ -45,4 +45,6 @@ export interface StatusEntryProps {
   children: string;
   /** The endpoint's information. */
   data: EndpointResponse[keyof EndpointResponse][keyof EndpointResponse];
+  /** Whether or not the entry is external meaning that it is not in the same location as the server. */
+  external?: boolean;
 }
