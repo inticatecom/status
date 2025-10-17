@@ -34,7 +34,7 @@ The installation process has been made fairly simple to provide a quick and easy
 2. Now that we have cloned the source code to our local machine, we can begin setting up our environment.
    We can start by preparing our configuration files by making a copy of the sample ones provided by default.
    ```bash
-   cd server/config && cp example.server.ts server.ts ** cp example.endpoints.ts endpoints.ts && cd ../
+   cd server/config && cp example.server.ts server.ts && cp example.endpoints.ts endpoints.ts && cd ../
    cp .env.example .env
    ```
    Now that these configuration files have been created, we can populate them with the data we need. Start by opening our newly created `.env` and follow the steps provided in the comments to retrieve the necessary values. Then you can open the `server/config/server.ts` and `server/config/endpoints.ts` configuration files and configure them to your liking.
