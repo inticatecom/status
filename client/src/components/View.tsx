@@ -2,7 +2,8 @@
 import { cn } from "@/lib/utility";
 
 // Definitions
-import type { CalloutProps } from "@/lib/definitions";
+import type { CalloutProps, TooltipProps } from "@/lib/definitions";
+import { useCallback, useState } from "react";
 
 /**
  * The callout component, used to alert an important message to the user.
@@ -37,5 +38,31 @@ export function Callout({
       )}>
       {children}
     </div>
+  );
+}
+
+export function Tooltip(props: TooltipProps) {
+  // States
+  const [active, setActive] = useState(false);
+
+  const setState = useCallback(
+    (state: boolean) => {
+      setActive(state);
+    },
+    [setActive]
+  );
+
+  return (
+    <button
+      className="relative block cursor-pointer"
+      onMouseEnter={() => setState(true)}
+      onMouseLeave={() => setState(false)}>
+      {active && (
+        <span className="absolute text-sm bg-[#070707] border-1 border-white/15 px-2 py-1 rounded-md z-10 text-nowrap left-full top-[125%]">
+          {props.label}
+        </span>
+      )}
+      {props.children}
+    </button>
   );
 }

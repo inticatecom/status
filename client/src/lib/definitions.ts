@@ -47,4 +47,10 @@ export interface StatusEntryProps {
   data: EndpointResponse[keyof EndpointResponse][keyof EndpointResponse];
   /** Whether or not the entry is external meaning that it is not in the same location as the server. */
   external?: boolean;
+  name: string;
+}
+
+export interface TooltipProps extends Children<true> {
+  label: string;
+  position: "top" | "bottom" | "left" | "right";
 }

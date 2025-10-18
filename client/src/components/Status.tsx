@@ -5,11 +5,18 @@ import { cn } from "@/lib/utility";
 // Hooks
 import { useState, useCallback } from "react";
 
+// Components
+import { Tooltip } from "./View";
+
 // Definitions
 import type * as Types from "@/lib/definitions";
 
 // Icons
-import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import {
+  IoMdArrowDropdown,
+  IoMdArrowDropup,
+  IoIosWarning,
+} from "react-icons/io";
 
 /**
  * Represents the container for the status page.
@@ -73,7 +80,16 @@ export function StatusEntry(props: Types.StatusEntryProps) {
 
   return (
     <div className={"w-full flex justify-between items-center"}>
-      <p className={"text-lg"}>{props.children}</p>
+      <div className="flex justify-center items-center gap-1">
+        <p className={"text-lg"}>{props.children}</p>
+        {props.external && (
+          <Tooltip
+            label={`'${props.name}' is outside of the server's region.`}
+            position="top">
+            <IoIosWarning className="text-orange-400" />
+          </Tooltip>
+        )}
+      </div>
       <p className={cn("text-end", style)}>
         {props.data.online ? "Operational" : "Offline"} ({props.data.latency}ms)
       </p>

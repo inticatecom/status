@@ -108,7 +108,8 @@ export default function Home({
                     <StatusEntry
                       key={endpointIndex}
                       data={endpointData}
-                      external={endpointData.region === server.region}>
+                      external={endpointData.region !== server.region}
+                      name={endpointName}>
                       {endpointName}
                     </StatusEntry>
                   )
