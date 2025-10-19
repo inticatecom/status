@@ -105,7 +105,11 @@ export default function Home({
                 }>
                 {Object.entries(categoryEndpoints).map(
                   ([endpointName, endpointData], endpointIndex) => (
-                    <StatusEntry key={endpointIndex} data={endpointData}>
+                    <StatusEntry
+                      key={endpointIndex}
+                      data={endpointData}
+                      external={endpointData.region !== server.region}
+                      name={endpointName}>
                       {endpointName}
                     </StatusEntry>
                   )
