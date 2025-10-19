@@ -36,10 +36,9 @@ export default async function RootPage() {
       }>
       <div className={"w-full flex flex-col justify-center items-center"}>
         <Image
-          className={"pointer-events-none mb-10"}
+          className={"pointer-events-none mb-10 w-auto h-auto"}
           src={"/assets/images/banner.png"}
           alt={"Inticate Logo"}
-          unoptimized
           width={400}
           height={100}
           priority
