@@ -1,4 +1,5 @@
 {
+  "name": "@status/server",
   "private": true,
   "scripts": {
     "start": "tsx dist/src/index.js",

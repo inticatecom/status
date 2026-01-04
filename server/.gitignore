@@ -139,8 +139,3 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
-
-# Project Configuration
-config/*
-!config/*example*
-!config/index.ts
