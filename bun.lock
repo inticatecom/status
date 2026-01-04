@@ -4,6 +4,9 @@
   "workspaces": {
     "": {
       "name": "inticate-status",
+      "dependencies": {
+        "dotenv": "^17.2.3",
+      },
       "devDependencies": {
         "concurrently": "^9.2.1",
         "rimraf": "^6.1.2",

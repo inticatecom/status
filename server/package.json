@@ -2,8 +2,8 @@
   "name": "@status/server",
   "private": true,
   "scripts": {
-    "start": "tsx dist/src/index.js",
-    "dev": "tsx watch src/index.ts",
+    "start": "bun dist/src/index.js",
+    "dev": "bun --watch src/index.ts",
     "build": "tsc",
     "clean": "rimraf dist",
     "lint": "npx eslint ."

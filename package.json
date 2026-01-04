@@ -12,24 +12,27 @@
     "client"
   ],
   "scripts": {
-    "start": "concurrently --raw \"npm run start:client\" \"npm run start:server\"",
-    "dev": "concurrently --raw \"npm run dev:client\" \"npm run dev:server\"",
-    "lint": "concurrently --raw \"npm run lint:client\" \"npm run lint:server\"",
-    "build": "concurrently --raw \"npm run build:client\" \"npm run build:server\"",
-    "start:server": "cd server && tsx dist/src/index.js",
-    "dev:server": "cd server && tsx watch src/index.ts",
-    "build:server": "cd server && tsc",
-    "clean:server": "cd server && rimraf dist",
-    "lint:server": "cd server && npx eslint .",
-    "start:client": "cd client && npm run start",
-    "dev:client": "cd client && npm run dev",
-    "build:client": "cd client && npm run build",
-    "lint:client": "cd client && npm run lint"
+    "start": "concurrently --raw \"bun start:client\" \"bun start:server\"",
+    "dev": "concurrently --raw \"bun dev:client\" \"bun dev:server\"",
+    "lint": "concurrently --raw \"bun lint:client\" \"bun lint:server\"",
+    "build": "concurrently --raw \"bun run build:client\" \"bun run build:server\"",
+    "start:server": "cd server && bun start",
+    "dev:server": "cd server && bun dev",
+    "build:server": "cd server && bun run build",
+    "clean:server": "cd server && bun clean",
+    "lint:server": "cd server && bun lint",
+    "start:client": "cd client && bun start",
+    "dev:client": "cd client && bun dev",
+    "build:client": "cd client && bun run build",
+    "lint:client": "cd client && bun lint"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
     "rimraf": "^6.1.2",
     "tsx": "^4.20.6",
     "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
   }
 }
