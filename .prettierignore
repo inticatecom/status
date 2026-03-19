@@ -1,0 +1,8 @@
+node_modules
+build
+.next
+.idea
+*.lock
+crowdin.yml
+en.d.json.ts
+.source

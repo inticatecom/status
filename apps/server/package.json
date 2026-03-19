@@ -1,0 +1,20 @@
+{
+  "name": "@status/server",
+  "private": true,
+  "scripts": {
+    "start": "bun dist/src/index.js",
+    "dev": "bun --watch src/index.ts",
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "lint": "npx eslint src"
+  },
+  "type": "module",
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "ky": "^1.11.0",
+    "pino": "^10.0.0",
+    "pino-pretty": "^13.1.1"
+  }
+}
