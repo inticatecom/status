@@ -12,7 +12,7 @@
     "client"
   ],
   "scripts": {
-    "start": "concurrently --raw \"bun start:client\" \"bun start:server\"",
+    "start": "concurrently --raw \"bun start:server\" \"bun start:client\"",
     "dev": "concurrently --raw \"bun dev:client\" \"bun dev:server\"",
     "lint": "concurrently --raw \"bun lint:client\" \"bun lint:server\"",
     "build": "concurrently --raw \"bun run build:client\" \"bun run build:server\"",
